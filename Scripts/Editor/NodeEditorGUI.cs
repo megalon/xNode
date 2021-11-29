@@ -486,8 +486,16 @@ namespace XNodeEditor {
                 EditorGUI.BeginChangeCheck();
 
                 //Draw node contents
-                nodeEditor.OnHeaderGUI();
-                nodeEditor.OnBodyGUI();
+                if (zoom > 3f)
+                    nodeEditor.OnHeaderGUIMinimal();
+                else
+                    nodeEditor.OnHeaderGUI();
+
+                // Debug.Log(zoom);
+                if (zoom > 1.5f)
+                    nodeEditor.OnBodyGUIMinimal();
+                else
+                    nodeEditor.OnBodyGUI();
 
                 //If user changed a value, notify other scripts through onUpdateNode
                 if (EditorGUI.EndChangeCheck()) {
