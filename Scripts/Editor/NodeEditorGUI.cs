@@ -491,7 +491,6 @@ namespace XNodeEditor {
                 else
                     nodeEditor.OnHeaderGUI();
 
-                // Debug.Log(zoom);
                 if (zoom > 1.5f)
                     nodeEditor.OnBodyGUIMinimal();
                 else

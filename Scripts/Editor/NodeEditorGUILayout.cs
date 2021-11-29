@@ -245,12 +245,12 @@ namespace XNodeEditor {
         }
 
         /// <summary> Make a simple port field. </summary>
-        public static void PortField(XNode.NodePort port, params GUILayoutOption[] options) {
-            PortField(null, port, options);
+        public static void PortField(XNode.NodePort port, bool minimalLOD = false, params GUILayoutOption[] options) {
+            PortField(null, port, minimalLOD, options);
         }
 
         /// <summary> Make a simple port field. </summary>
-        public static void PortField(GUIContent label, XNode.NodePort port, params GUILayoutOption[] options) {
+        public static void PortField(GUIContent label, XNode.NodePort port, bool minimalLOD = false, params GUILayoutOption[] options) {
             if (port == null) return;
             if (options == null) options = new GUILayoutOption[] { GUILayout.MinWidth(30) };
             Vector2 position = Vector3.zero;
@@ -259,7 +259,10 @@ namespace XNodeEditor {
             // If property is an input, display a regular property field and put a port handle on the left side
             if (port.direction == XNode.NodePort.IO.Input) {
                 // Display a label
-                EditorGUILayout.LabelField(content, options);
+                if (minimalLOD)
+                    EditorGUILayout.Space(22);
+                else
+                    EditorGUILayout.LabelField(content, options);
 
                 Rect rect = GUILayoutUtility.GetLastRect();
                 float paddingLeft = NodeEditorWindow.current.graphEditor.GetPortStyle(port).padding.left;
@@ -268,17 +271,20 @@ namespace XNodeEditor {
             // If property is an output, display a text label and put a port handle on the right side
             else if (port.direction == XNode.NodePort.IO.Output) {
                 // Display a label
-                EditorGUILayout.LabelField(content, NodeEditorResources.OutputPort, options);
+                if (minimalLOD)
+                    EditorGUILayout.Space(22);
+                else
+                    EditorGUILayout.LabelField(content, NodeEditorResources.OutputPort, options);
 
                 Rect rect = GUILayoutUtility.GetLastRect();
                 rect.width += NodeEditorWindow.current.graphEditor.GetPortStyle(port).padding.right;
                 position = rect.position + new Vector2(rect.width, 0);
             }
-            PortField(position, port);
+            PortField(position, port, minimalLOD);
         }
 
         /// <summary> Make a simple port field. </summary>
-        public static void PortField(Vector2 position, XNode.NodePort port) {
+        public static void PortField(Vector2 position, XNode.NodePort port, bool minimalLOD = false) {
             if (port == null) return;
 
             Rect rect = new Rect(position, new Vector2(16, 16));
@@ -325,10 +331,11 @@ namespace XNodeEditor {
         }
 
         /// <summary> Draws an input and an output port on the same line </summary>
-        public static void PortPair(XNode.NodePort input, XNode.NodePort output) {
+        public static void PortPair(XNode.NodePort input, XNode.NodePort output, bool minimalLOD = false)
+        {
             GUILayout.BeginHorizontal();
-            NodeEditorGUILayout.PortField(input, GUILayout.MinWidth(0));
-            NodeEditorGUILayout.PortField(output, GUILayout.MinWidth(0));
+            NodeEditorGUILayout.PortField(input, minimalLOD, GUILayout.MinWidth(0));
+            NodeEditorGUILayout.PortField(output, minimalLOD, GUILayout.MinWidth(0));
             GUILayout.EndHorizontal();
         }
 

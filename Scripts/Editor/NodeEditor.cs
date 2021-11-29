@@ -48,7 +48,7 @@ namespace XNodeEditor {
             foreach (XNode.NodePort dynamicPort in target.DynamicPorts)
             {
                 if (NodeEditorGUILayout.IsDynamicPortListPort(dynamicPort)) continue;
-                NodeEditorGUILayout.PortField(dynamicPort);
+                NodeEditorGUILayout.PortField(dynamicPort, true);
             }
 
             serializedObject.ApplyModifiedProperties();
