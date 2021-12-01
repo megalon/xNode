@@ -439,7 +439,7 @@ namespace XNodeEditor {
                 // Culling
                 if (e.type == EventType.Layout) {
                     // Cull unselected nodes outside view
-                    if (drewAllNodesOnLoad && !Selection.Contains(node) && ShouldBeCulled(node))
+                    if (!drawAllNodesOnce && !Selection.Contains(node) && ShouldBeCulled(node))
                     {
                         culledNodes.Add(node);
                         continue;
@@ -560,7 +560,7 @@ namespace XNodeEditor {
             //and thus, the code should not be included in build.
             if (onValidate != null && EditorGUI.EndChangeCheck()) onValidate.Invoke(Selection.activeObject, null);
 
-            drewAllNodesOnLoad = true;
+            drawAllNodesOnce = false;
         }
 
         private bool ShouldBeCulled(XNode.Node node) {
