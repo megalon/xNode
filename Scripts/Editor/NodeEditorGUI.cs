@@ -439,7 +439,7 @@ namespace XNodeEditor {
                 // Culling
                 if (e.type == EventType.Layout) {
                     // Cull unselected nodes outside view
-                    if (drewAllNodesOnLoad && !Selection.Contains(node) && ShouldBeCulled(node))
+                    if (!drawAllNodesOnce && !Selection.Contains(node) && ShouldBeCulled(node))
                     {
                         culledNodes.Add(node);
                         continue;
@@ -486,8 +486,15 @@ namespace XNodeEditor {
                 EditorGUI.BeginChangeCheck();
 
                 //Draw node contents
-                nodeEditor.OnHeaderGUI();
-                nodeEditor.OnBodyGUI();
+                if (zoom > NodeEditorPreferences.GetSettings().dynamicLODStage2)
+                    nodeEditor.OnHeaderGUIMinimal();
+                else
+                    nodeEditor.OnHeaderGUI();
+
+                if (zoom > NodeEditorPreferences.GetSettings().dynamicLODStage1)
+                    nodeEditor.OnBodyGUIMinimal();
+                else
+                    nodeEditor.OnBodyGUI();
 
                 //If user changed a value, notify other scripts through onUpdateNode
                 if (EditorGUI.EndChangeCheck()) {
@@ -553,7 +560,7 @@ namespace XNodeEditor {
             //and thus, the code should not be included in build.
             if (onValidate != null && EditorGUI.EndChangeCheck()) onValidate.Invoke(Selection.activeObject, null);
 
-            drewAllNodesOnLoad = true;
+            drawAllNodesOnce = false;
         }
 
         private bool ShouldBeCulled(XNode.Node node) {

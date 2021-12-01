@@ -22,8 +22,36 @@ namespace XNodeEditor {
         protected internal static bool inNodeEditor = false;
 #endif
 
+        public virtual void OnHeaderGUIMinimal() {
+            EditorGUILayout.Space(25);
+        }
+
         public virtual void OnHeaderGUI() {
             GUILayout.Label(target.name, NodeEditorResources.styles.nodeHeader, GUILayout.Height(30));
+        }
+
+        public virtual void OnBodyGUIMinimal() {
+            serializedObject.Update();
+            string[] excludes = { "m_Script", "graph", "position", "ports" };
+
+            // Iterate through serialized properties and draw them like the Inspector (But with ports)
+            SerializedProperty iterator = serializedObject.GetIterator();
+            bool enterChildren = true;
+            while (iterator.NextVisible(enterChildren))
+            {
+                enterChildren = false;
+                if (excludes.Contains(iterator.name)) continue;
+                NodeEditorGUILayout.PropertyField(iterator, true, true);
+            }
+
+            // Iterate through dynamic ports and draw them in the order in which they are serialized
+            foreach (XNode.NodePort dynamicPort in target.DynamicPorts)
+            {
+                if (NodeEditorGUILayout.IsDynamicPortListPort(dynamicPort)) continue;
+                NodeEditorGUILayout.PortField(dynamicPort, true);
+            }
+
+            serializedObject.ApplyModifiedProperties();
         }
 
         /// <summary> Draws standard field editors for all public fields </summary>

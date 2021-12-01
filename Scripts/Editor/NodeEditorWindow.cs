@@ -16,7 +16,7 @@ namespace XNodeEditor {
         [SerializeField] private NodePortReference[] _references = new NodePortReference[0];
         [SerializeField] private Rect[] _rects = new Rect[0];
 
-        private static bool drewAllNodesOnLoad = false;
+        private static bool drawAllNodesOnce = false;
 
         private Func<bool> isDocked {
             get {
@@ -201,7 +201,7 @@ namespace XNodeEditor {
         public static NodeEditorWindow Open(XNode.NodeGraph graph) {
             if (!graph) return null;
 
-            drewAllNodesOnLoad = false;
+            drawAllNodesOnce = true;
 
             NodeEditorWindow w = GetWindow(typeof(NodeEditorWindow), false, "xNode", true) as NodeEditorWindow;
             w.wantsMouseMove = true;
@@ -215,6 +215,11 @@ namespace XNodeEditor {
             for (int i = 0; i < windows.Length; i++) {
                 windows[i].Repaint();
             }
+        }
+
+        public static void DrawAllNodesOnce()
+        {
+            drawAllNodesOnce = true;
         }
     }
 }

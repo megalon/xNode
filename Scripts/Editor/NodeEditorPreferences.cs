@@ -32,6 +32,8 @@ namespace XNodeEditor {
             [UnityEngine.Serialization.FormerlySerializedAs("zoomOutLimit")]
             public float maxZoom = 5f;
             public float minZoom = 1f;
+            public float dynamicLODStage1 = 3f;
+            public float dynamicLODStage2 = 3f;
             public Color32 tintColor = new Color32(90, 97, 105, 255);
             public Color32 highlightColor = new Color32(255, 255, 255, 255);
             public bool gridSnap = true;
@@ -170,6 +172,11 @@ namespace XNodeEditor {
             settings.portTooltips = EditorGUILayout.Toggle("Port Tooltips", settings.portTooltips);
             settings.dragToCreate = EditorGUILayout.Toggle(new GUIContent("Drag to Create", "Drag a port connection anywhere on the grid to create and connect a node"), settings.dragToCreate);
             settings.createFilter = EditorGUILayout.Toggle(new GUIContent("Create Filter", "Only show nodes that are compatible with the selected port"), settings.createFilter);
+            EditorGUILayout.LabelField("Dynamic LOD (Level of Detail)");
+            EditorGUI.indentLevel++;
+            settings.dynamicLODStage1 = EditorGUILayout.FloatField(new GUIContent("Fields Zoom Limit", "The zoom level at which the editable fields disappear"), settings.dynamicLODStage1);
+            settings.dynamicLODStage2 = EditorGUILayout.FloatField(new GUIContent("Label Zoom Limit", "The zoom level at which the labels disappear"), settings.dynamicLODStage2);
+            EditorGUI.indentLevel--;
 
             //END
             if (GUI.changed) {
