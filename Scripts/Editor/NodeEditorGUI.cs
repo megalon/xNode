@@ -486,12 +486,12 @@ namespace XNodeEditor {
                 EditorGUI.BeginChangeCheck();
 
                 //Draw node contents
-                if (zoom > 3f)
+                if (zoom > NodeEditorPreferences.GetSettings().dynamicLODStage2)
                     nodeEditor.OnHeaderGUIMinimal();
                 else
                     nodeEditor.OnHeaderGUI();
 
-                if (zoom > 1.5f)
+                if (zoom > NodeEditorPreferences.GetSettings().dynamicLODStage1)
                     nodeEditor.OnBodyGUIMinimal();
                 else
                     nodeEditor.OnBodyGUI();
